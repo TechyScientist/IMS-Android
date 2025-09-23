@@ -1,7 +1,41 @@
 <resources>
-    <string name="app_name">Android IMS</string>
-    
+    <string name="app_name">IMS</string>
+
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="sign_in">Sign In</string>
+    <string name="activity_title">IMS: %1$s</string>
+    <string name="error"><![CDATA[<b>Error %1$d (%2$s)</b>: %3$s]]></string>
+    <string name="success"><![CDATA[<b>Success:</b>: %1$s]]></string>
+    <string name="dismiss">Dismiss</string>
+
+    <string name="dashboard_header">Welcome, %1$s!</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="camera_scan">Scan with Camera</string>
+    <string name="search">Search</string>
+    <string name="search_label">Search Criteria:</string>
+    <string name="admin_list">Administration</string>
+    <string name="add_user">Add a User</string>
+    <string name="edit_user">Edit an Existing User</string>
+    <string name="delete_user">Delete an Existing User</string>
+    <string name="add_record">Add an IMS Record</string>
+    <string name="edit_record">Edit an Existing IMS Record</string>
+    <string name="delete_record">Delete an Existing IMS Record</string>
+
+    <string name="to_dashboard">Return to Dashboard</string>
+    <string name="name">Name:</string>
+    <string name="confirm">Confirm Password:</string>
+    <string name="access">Access Level:</string>
+    <string name="add_user2">Add User</string>
+    <string-array name="access_list">
+        <item>Standard User</item>
+        <item>Administrative User</item>
+    </string-array>
+
+    <string name="delete_warning"><![CDATA[<b>Warning</b>: Deleting an account is permanent and cannot be undone.]]></string>
+    <string name="user_to_delete">User to Delete:</string>
+    <string name="delete_user2">Delete User</string>
+    <string name="confirm_delete_title">Are you Sure?</string>
+    <string name="yes">Yes, Delete</string>
+    <string name="no">No, Cancel</string>
 </resources>
