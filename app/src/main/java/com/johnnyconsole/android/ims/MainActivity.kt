@@ -101,7 +101,6 @@ class MainActivity : AppCompatActivity() {
             binding.etPassword.text.clear()
             binding.etUsername.requestFocus()
             startActivity(Intent(this, DashboardActivity::class.java))
-            pressed = false
         }
         else {
             binding.tvErrorMessage.text = HtmlCompat.fromHtml(
@@ -112,5 +111,6 @@ class MainActivity : AppCompatActivity() {
                 ), HtmlCompat.FROM_HTML_MODE_LEGACY)
             binding.tvErrorMessage.visibility = VISIBLE
         }
+        pressed = false
     }
 }
