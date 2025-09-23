@@ -1,5 +1,6 @@
 package com.johnnyconsole.android.ims
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
@@ -15,11 +16,16 @@ import java.net.URL
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.HttpsURLConnection
 import android.view.View.VISIBLE
+import android.view.View.GONE
 import android.view.View.INVISIBLE
+import androidx.core.text.HtmlCompat
+import com.johnnyconsole.android.ims.session.UserSession
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var pressed = false
 
     private inner class SignInTask: AsyncTask<String, Unit, String>() {
 
@@ -71,15 +77,40 @@ class MainActivity : AppCompatActivity() {
             }
 
             btSignIn.setOnClickListener {_ ->
-                if(etUsername.text.isNullOrBlank() || etPassword.text.isNullOrBlank())
+                if(pressed || etUsername.text.isNullOrBlank() || etPassword.text.isNullOrBlank())
                     return@setOnClickListener
+                pressed = true
                 SignInTask().execute(etUsername.text.toString().lowercase(), etPassword.text.toString())
             }
         }
     }
 
     private fun parseResponseString(response: String) {
-        //TODO: Parse the response string and store values locally for user session
         Log.d("SignInResponse", response)
+        val json = JSONObject(response)
+        val status = json.getInt("status")
+        if(status == 200) {
+            binding.tvErrorMessage.visibility = GONE
+            val user = json.getJSONObject("user")
+            UserSession.construct(
+                user.getString("username"),
+                user.getString("name"),
+                user.getInt("access")
+            )
+            binding.etUsername.text.clear()
+            binding.etPassword.text.clear()
+            binding.etUsername.requestFocus()
+            startActivity(Intent(this, DashboardActivity::class.java))
+            pressed = false
+        }
+        else {
+            binding.tvErrorMessage.text = HtmlCompat.fromHtml(
+                getString(R.string.error,
+                    status,
+                    json.getString("category"),
+                    json.getString("message")
+                ), HtmlCompat.FROM_HTML_MODE_LEGACY)
+            binding.tvErrorMessage.visibility = VISIBLE
+        }
     }
 }
