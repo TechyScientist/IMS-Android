@@ -61,6 +61,10 @@ class DashboardActivity : AppCompatActivity() {
                 startActivity(Intent(this@DashboardActivity, AddUserActivity::class.java))
             }
 
+            btDeleteUser.setOnClickListener {_ ->
+                startActivity(Intent(this@DashboardActivity, DeleteUserActivity::class.java))
+            }
+
             btSignOut.setOnClickListener { _ ->
                 UserSession.destroy()
                 finish()
