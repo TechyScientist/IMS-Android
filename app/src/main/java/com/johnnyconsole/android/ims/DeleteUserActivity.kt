@@ -47,7 +47,7 @@ class DeleteUserActivity : AppCompatActivity() {
 
         override fun doInBackground(vararg p0: Unit?): String {
             val conn =
-                (URL("https://wildfly.johnnyconsole.com:8443/senvote-restful/api/user/all-except-${UserSession.username}")
+                (URL("https://wildfly.johnnyconsole.com:8443/ims-restful/api/user/all-except-${UserSession.username}")
                     .openConnection()) as HttpsURLConnection
             conn.requestMethod = "GET"
             conn.hostnameVerifier = HostnameVerifier { _, _ -> true }
@@ -66,12 +66,18 @@ class DeleteUserActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String) {
             super.onPostExecute(result)
+            Log.d("GetUsersResponse", result)
             binding.pbIndicator.visibility = INVISIBLE
             val userArray = JSONObject(result).getJSONArray("users")
             val usernames = ArrayList<String>()
 
-            for (i in 0 until userArray.length()) {
-                usernames.add(userArray.getString(i))
+            if(userArray.length() > 0) {
+                for (i in 0 until userArray.length()) {
+                    usernames.add(userArray.getString(i))
+                }
+            }
+            else {
+                usernames.add("No Users Found")
             }
 
             binding.spUserList.adapter = UserListAdapter(usernames)
@@ -113,6 +119,7 @@ class DeleteUserActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String) {
             super.onPostExecute(result)
+            Log.d("DeleteUserResponse", result)
             binding.pbIndicator.visibility = INVISIBLE
             parseResponseString(result)
         }
@@ -149,22 +156,26 @@ class DeleteUserActivity : AppCompatActivity() {
                     .setPositiveButton(R.string.yes) { it, _, ->
                         it.dismiss()
                         val item = spUserList.selectedItem.toString()
-                        DeleteUserTask().execute(
-                            item.subSequence(
-                                item.indexOf("(") + 1,
-                                item.indexOf(")")
+                        if (!item.equals("No Users Found")) {
+                            DeleteUserTask().execute(
+                                item.subSequence(
+                                    item.indexOf("(") + 1,
+                                    item.indexOf(")")
+                                )
+                                    .toString()
                             )
-                                .toString()
-                        )
+                        }
                     }.setNegativeButton(R.string.no) { it, _ ->
                         it.dismiss()
                     }.create()
 
                 dialog.show()
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.error))
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.success))
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(getColor(R.color.error))
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(getColor(R.color.success))
             }
-                GetUsersTask().execute()
+            GetUsersTask().execute()
         }
     }
 
