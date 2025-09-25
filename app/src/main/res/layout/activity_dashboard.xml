@@ -61,6 +61,12 @@
                     android:importantForAutofill="no"/>
         </LinearLayout>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btSearchBy"
+            android:backgroundTint="@color/primary_dark" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

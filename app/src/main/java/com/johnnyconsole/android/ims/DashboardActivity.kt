@@ -1,5 +1,6 @@
 package com.johnnyconsole.android.ims
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.johnnyconsole.android.ims.databinding.ActivityDashboardBinding
 import com.johnnyconsole.android.ims.session.UserSession
 import android.view.View.INVISIBLE
+import androidx.appcompat.app.AlertDialog
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -28,8 +30,22 @@ class DashboardActivity : AppCompatActivity() {
             appBar.activityTitle.text = getString(R.string.activity_title, "Dashboard")
 
             tvHeader.text = getString(R.string.dashboard_header, UserSession.name!!)
+            btSearchBy.text = getString(R.string.search_by, "IMS Barcode")
 
             if(UserSession.access != 1) llAdmin.visibility = INVISIBLE
+
+            btSearchBy.setOnClickListener {_ ->
+                val dialog = AlertDialog.Builder(this@DashboardActivity)
+                    .setTitle(R.string.search_title)
+                    .setItems(R.array.search_fields) { _, i ->
+                        btSearchBy.text = getString(R.string.search_by, resources.getStringArray(R.array.search_fields)[i])
+                    }.setNegativeButton(R.string.cancel) {dialog, _ ->
+                        dialog.dismiss()
+                    }.create()
+
+                dialog.show()
+                dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getColor(R.color.error))
+            }
 
             btSignOut.setOnClickListener { _ ->
                 UserSession.destroy()

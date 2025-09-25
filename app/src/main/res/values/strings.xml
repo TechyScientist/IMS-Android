@@ -21,10 +21,18 @@
     <string name="add_record">Add an IMS Record</string>
     <string name="edit_record">Edit an Existing IMS Record</string>
     <string name="delete_record">Delete an Existing IMS Record</string>
+    <string name="search_by">Search By: %1$s</string>
+    <string name="search_title">Select Search Criterion Field</string>
+    <string name="cancel">Cancel</string>
+    <string-array name="search_fields">
+        <item>IMS Barcode</item>
+        <item>Product Name</item>
+        <item>Manufacturer Product Number</item>
+    </string-array>
 
     <string name="to_dashboard">Return to Dashboard</string>
     <string name="name">Name:</string>
-    <string name="confirm">Confirm Password:</string>
+    <string name="confirm_password">Confirm Password:</string>
     <string name="access">Access Level:</string>
     <string name="add_user2">Add User</string>
     <string-array name="access_list">
