@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -18,6 +19,7 @@ import javax.net.ssl.HttpsURLConnection
 import android.view.View.VISIBLE
 import android.view.View.GONE
 import android.view.View.INVISIBLE
+import android.view.inputmethod.EditorInfo
 import androidx.core.text.HtmlCompat
 import com.johnnyconsole.android.ims.session.UserSession
 import org.json.JSONObject
@@ -76,12 +78,32 @@ class MainActivity : AppCompatActivity() {
                 insets
             }
 
-            btSignIn.setOnClickListener {_ ->
-                if(pressed || etUsername.text.isNullOrBlank() || etPassword.text.isNullOrBlank())
-                    return@setOnClickListener
-                pressed = true
-                SignInTask().execute(etUsername.text.toString().lowercase(), etPassword.text.toString())
+            etUsername.setOnEditorActionListener { _, action, event ->
+               return@setOnEditorActionListener if(action == EditorInfo.IME_ACTION_DONE ||
+                   (event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                   signin()
+                   true
+               } else false
             }
+
+            etPassword.setOnEditorActionListener { _, action, event ->
+                return@setOnEditorActionListener if(action == EditorInfo.IME_ACTION_DONE ||
+                    (event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                    signin()
+                    true
+                } else false
+            }
+
+            btSignIn.setOnClickListener {_ -> signin()}
+        }
+    }
+
+    private fun signin() {
+        with(binding) {
+            if(pressed || etUsername.text.isNullOrBlank() || etPassword.text.isNullOrBlank())
+                return@signin
+            pressed = true
+            SignInTask().execute(etUsername.text.toString().lowercase(), etPassword.text.toString())
         }
     }
 

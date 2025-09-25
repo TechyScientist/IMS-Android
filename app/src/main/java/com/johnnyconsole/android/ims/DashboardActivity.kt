@@ -3,6 +3,7 @@ package com.johnnyconsole.android.ims
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.johnnyconsole.android.ims.databinding.ActivityDashboardBinding
 import com.johnnyconsole.android.ims.session.UserSession
 import android.view.View.INVISIBLE
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AlertDialog
 
 class DashboardActivity : AppCompatActivity() {
@@ -32,6 +34,14 @@ class DashboardActivity : AppCompatActivity() {
             tvHeader.text = getString(R.string.dashboard_header, UserSession.name!!)
             btSearchBy.text = getString(R.string.search_by, "IMS Barcode")
 
+            etSearch.setOnEditorActionListener { _, action, event ->
+                return@setOnEditorActionListener if(action == EditorInfo.IME_ACTION_DONE ||
+                    (event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                    search()
+                    true
+                } else false
+            }
+
             if(UserSession.access != 1) llAdmin.visibility = INVISIBLE
 
             btSearchBy.setOnClickListener {_ ->
@@ -52,5 +62,9 @@ class DashboardActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun search() {
+        //TODO: Implement searching functionality
     }
 }
