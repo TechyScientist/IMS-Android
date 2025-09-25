@@ -57,6 +57,10 @@ class DashboardActivity : AppCompatActivity() {
                 dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getColor(R.color.error))
             }
 
+            btAddUser.setOnClickListener {_ ->
+                startActivity(Intent(this@DashboardActivity, AddUserActivity::class.java))
+            }
+
             btSignOut.setOnClickListener { _ ->
                 UserSession.destroy()
                 finish()
